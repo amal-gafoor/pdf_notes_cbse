@@ -12,6 +12,7 @@ import {
 } from "@/lib/session";
 import { verifyOtpRemote } from "@/lib/msg91";
 import { saveLead } from "@/lib/db";
+import { appendLeadToSheet } from "@/lib/sheet";
 import { findClass } from "@/lib/config";
 
 const MAX_TRIES = 5;
@@ -59,13 +60,18 @@ export async function POST(req) {
     phone: pending.phone,
   });
 
-  // The one and only write per student. Duplicates are dropped by the
-  // unique phone constraint, so re-verifying never adds a second row.
-  await saveLead({
+  // The one and only write per student. Duplicates are dropped by the unique
+  // phone constraint in Supabase and by a phone lookup in the sheet, so
+  // re-verifying never adds a second row to either.
+  //
+  // Both are best-effort and neither can throw, so they run together rather
+  // than making the student wait for one and then the other.
+  const lead = {
     name: pending.name,
     phone: pending.phone,
     cls: findClass(pending.cls)?.label || pending.cls,
-  });
+  };
+  await Promise.all([saveLead(lead), appendLeadToSheet(lead)]);
 
   const res = NextResponse.json({ ok: true, name: pending.name });
   res.cookies.set(SESSION_COOKIE, session, sessionCookieOptions());

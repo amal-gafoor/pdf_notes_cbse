@@ -80,7 +80,7 @@ export default function Gate({ classSlug, className, resource, otpLength = 4 }) 
       boxes.current[0]?.focus();
       return setError(data.error || "That code is not correct");
     }
-    router.replace(resource ? `/api/open/${resource}` : "/library");
+    router.replace(resource ? `/view/${resource}` : "/library");
     router.refresh();
   }
 

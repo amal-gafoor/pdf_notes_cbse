@@ -114,10 +114,10 @@ export default async function Library({ searchParams }) {
               </p>
               <p className="mt-0.5 text-[13px] text-ink-50">{metaOf(file)}</p>
               <a
-                href={`/api/open/${file.id}`}
+                href={`/view/${file.id}${folderName ? `?f=${folderId}` : ""}`}
                 className="mt-4 grid h-11 place-items-center rounded-xl border border-brand/30 bg-brand-50 text-[14px] font-medium text-brand-700 active:scale-[.99] transition-transform"
               >
-                Open in Drive
+                Open PDF
               </a>
             </li>
           ))}

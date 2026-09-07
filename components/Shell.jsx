@@ -1,7 +1,9 @@
 import Logo from "./Logo";
 import { BRAND } from "@/lib/config";
 
-export default function Shell({ children }) {
+// `wide` drops the reading-width cap — the PDF viewer needs the whole screen,
+// everything else reads better narrow.
+export default function Shell({ children, wide = false }) {
   return (
     <div className="min-h-dvh flex flex-col">
       <header className="px-5 pt-6 pb-4 flex items-center">
@@ -10,7 +12,11 @@ export default function Shell({ children }) {
         </a>
       </header>
 
-      <main className="flex-1 px-5 pb-8 w-full max-w-[26rem] mx-auto">
+      <main
+        className={`flex-1 px-5 pb-8 w-full mx-auto ${
+          wide ? "max-w-[56rem]" : "max-w-[26rem]"
+        }`}
+      >
         {children}
       </main>
 

@@ -24,7 +24,7 @@ export default async function GatePage({ params, searchParams }) {
   // Already verified on this browser — no second OTP, ever.
   const session = await getSession();
   if (session) {
-    redirect(wanted ? `/api/open/${wanted}` : `/library?c=${params.slug}`);
+    redirect(wanted ? `/view/${wanted}` : `/library?c=${params.slug}`);
   }
 
   return (
